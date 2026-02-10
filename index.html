@@ -11,11 +11,13 @@
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap'); 
  
         :root { 
-            --pink-main: #ff85b3;
-            --pink-soft: #ffdcf0;
-            --blue-soft: #d0f0fd;
-            --white-soft: #fdfbff;
-            --dark-text: #2b2030; 
+            --cold-main: #5e81ac; 
+            --cold-soft: #88c0d0; 
+            --blue-deep: #2e3440; 
+            --mist-white: #eceff4; 
+            --dark-text: #eceff4; 
+            --glass-bg: rgba(46, 52, 64, 0.6); 
+            --glass-border: rgba(136, 192, 208, 0.2); 
         } 
  
         * { box-sizing: border-box; } 
@@ -23,38 +25,90 @@
         body { 
             font-family: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; 
             min-height: 100vh; 
-            /* Iridescent Shampoo Gradient */
-            background: 
-                radial-gradient(circle at 20% 20%, rgba(208, 240, 253, 0.8), transparent 50%), 
-                radial-gradient(circle at 80% 80%, rgba(255, 182, 212, 0.8), transparent 50%), 
-                linear-gradient(135deg, #e6f7ff 0%, #fff0f6 50%, #e6fff0 100%); 
+            /* Dark Cold Gradient */
+            background: radial-gradient(circle at 50% -20%, #4c566a, #2e3440, #000000); 
             padding: 24px 12px 32px; 
             color: var(--dark-text); 
             overflow-x: hidden;
             position: relative;
         } 
 
-        /* Foam Decoration */
-        .foam-decoration {
+        /* Fog Feature */
+        .fog-container {
             position: fixed;
-            bottom: -5px;
+            top: 0;
             left: 0;
             width: 100%;
-            height: 60px;
-            background-image: radial-gradient(circle at 10px 10px, rgba(255,255,255,0.8) 10px, transparent 11px);
-            background-size: 30px 40px;
-            background-repeat: repeat-x;
+            height: 100%;
             z-index: 1;
             pointer-events: none;
-            opacity: 0.6;
+            overflow: hidden;
         }
- 
+        .fog-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(to right, transparent 0%, rgba(136, 192, 208, 0.05) 25%, transparent 50%, rgba(136, 192, 208, 0.05) 75%, transparent 100%);
+            animation: drift 60s linear infinite;
+        }
+        .fog-layer:nth-child(2) {
+            animation-duration: 45s;
+            animation-direction: reverse;
+            background: linear-gradient(to right, transparent 0%, rgba(236, 239, 244, 0.03) 40%, transparent 100%);
+        }
+
+        @keyframes drift {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Nature Feature: Forest Silhouette */
+        .forest-bg {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 25vh;
+            background: linear-gradient(to top, #1a202c, transparent);
+            z-index: 0;
+        }
+        .tree-line {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background-color: #1a202c;
+            /* Simple jagged pattern for trees */
+            clip-path: polygon(
+                0% 100%, 2% 60%, 4% 100%, 6% 40%, 8% 100%, 
+                10% 50%, 12% 100%, 14% 30%, 16% 100%, 18% 70%, 20% 100%,
+                22% 50%, 24% 100%, 26% 20%, 28% 100%, 30% 60%, 32% 100%,
+                34% 40%, 36% 100%, 38% 80%, 40% 100%, 42% 50%, 44% 100%,
+                46% 30%, 48% 100%, 50% 70%, 52% 100%, 54% 20%, 56% 100%,
+                58% 60%, 60% 100%, 62% 40%, 64% 100%, 66% 80%, 68% 100%,
+                70% 50%, 72% 100%, 74% 30%, 76% 100%, 78% 70%, 80% 100%,
+                82% 20%, 84% 100%, 86% 60%, 88% 100%, 90% 40%, 92% 100%,
+                94% 80%, 96% 100%, 98% 30%, 100% 100%
+            );
+            opacity: 0.8;
+        }
+        .tree-line.back {
+            height: 150px;
+            bottom: 0;
+            opacity: 0.4;
+            transform: scaleX(-1);
+            filter: blur(2px);
+        }
+
         .app-shell { 
-            background: rgba(255, 255, 255, 0.75); 
-            backdrop-filter: blur(14px); 
+            background: var(--glass-bg); 
+            backdrop-filter: blur(10px); 
             border-radius: 26px; 
-            box-shadow: 0 18px 40px rgba(100, 149, 237, 0.15); 
-            border: 1px solid rgba(255, 255, 255, 0.6); 
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.4); 
+            border: 1px solid var(--glass-border); 
             padding: 24px 18px 20px; 
             position: relative;
             z-index: 10;
@@ -76,7 +130,7 @@
             letter-spacing: 0.25em; 
             font-size: 0.75rem; 
             text-transform: uppercase; 
-            color: #5588a3; 
+            color: var(--cold-soft); 
         } 
  
         .welcome-title { 
@@ -86,14 +140,15 @@
             line-height: 1.2; 
             margin-top: 0.75rem; 
             margin-bottom: 0.3rem; 
-            background: linear-gradient(135deg, #ff6fa8, #4facfe);
+            background: linear-gradient(135deg, #a3be8c, #88c0d0, #5e81ac);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(136, 192, 208, 0.3);
         } 
  
         .welcome-sub { 
             font-size: 0.95rem; 
-            color: #5d7482; 
+            color: #d8dee9; 
         } 
  
         #start-btn { 
@@ -106,10 +161,10 @@
             letter-spacing: 0.16em; 
             text-transform: uppercase; 
             cursor: pointer; 
-            background-image: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%); 
+            background-image: linear-gradient(135deg, #5e81ac 0%, #88c0d0 100%); 
             background-size: 200% auto; 
             color: white; 
-            box-shadow: 0 10px 25px rgba(161, 140, 209, 0.4); 
+            box-shadow: 0 10px 25px rgba(94, 129, 172, 0.4); 
             transition: 
                 background-position 0.4s ease, 
                 transform 0.16s ease, 
@@ -119,12 +174,12 @@
         #start-btn:hover { 
             background-position: right center; 
             transform: translateY(-1px); 
-            box-shadow: 0 14px 30px rgba(161, 140, 209, 0.5); 
+            box-shadow: 0 14px 30px rgba(94, 129, 172, 0.5); 
         } 
  
         #start-btn:active { 
             transform: translateY(1px) scale(0.98); 
-            box-shadow: 0 6px 16px rgba(161, 140, 209, 0.45); 
+            box-shadow: 0 6px 16px rgba(94, 129, 172, 0.45); 
         } 
  
         /* MAIN HEADER */ 
@@ -144,9 +199,9 @@
             letter-spacing: 0.18em; 
             padding: 0.32rem 0.9rem; 
             border-radius: 999px; 
-            background: rgba(208, 240, 253, 0.45); 
-            border: 1px solid rgba(135, 206, 250, 0.5); 
-            color: #4facfe; 
+            background: rgba(136, 192, 208, 0.15); 
+            border: 1px solid rgba(136, 192, 208, 0.3); 
+            color: #88c0d0; 
             margin-bottom: 0.5rem; 
         } 
  
@@ -154,13 +209,13 @@
             font-family: 'Roboto Mono', monospace; 
             font-size: 1.55rem; 
             font-weight: 700; 
-            color: #3a2237; 
+            color: #eceff4; 
         } 
  
         .daily-affirmation { 
             font-family: 'Poppins', sans-serif; 
             font-size: 0.9rem; 
-            color: #5d7482; 
+            color: #d8dee9; 
             font-style: italic; 
             margin: 0.2rem auto 0.5rem; 
             max-width: 80%; 
@@ -176,22 +231,23 @@
  
         .datetime { 
             font-size: 0.8rem; 
-            color: #5d7482; 
+            color: #2e3440; 
             font-weight: 500; 
-            background: #f0f8ff; 
+            background: #88c0d0; 
             border-radius: 999px; 
             padding: 0.43rem 1.2rem; 
             display: inline-flex; 
             align-items: center; 
             gap: 0.35rem; 
+            box-shadow: 0 0 10px rgba(136, 192, 208, 0.3);
         } 
  
         .clock-dot { 
             width: 8px; 
             height: 8px; 
             border-radius: 999px; 
-            background: #4facfe; 
-            box-shadow: 0 0 0 4px rgba(79, 172, 254, 0.25); 
+            background: #2e3440; 
+            box-shadow: 0 0 0 2px rgba(46, 52, 64, 0.25); 
         } 
  
         .top-actions { 
@@ -205,7 +261,7 @@
  
         .info-text { 
             font-size: 0.78rem; 
-            color: #8b637e; 
+            color: #81a1c1; 
             display: flex; 
             align-items: center; 
             gap: 0.35rem; 
@@ -215,7 +271,7 @@
             width: 6px; 
             height: 6px; 
             border-radius: 999px; 
-            background: var(--pink-main); 
+            background: var(--cold-soft); 
         } 
  
         /* TOMBOL EDIT USER DI POJOK KANAN ATAS (FIXED) */ 
@@ -229,27 +285,27 @@
             padding: 0.5rem 1.1rem; 
             font-size: 0.78rem; 
             font-weight: 600; 
-            color: #fff; 
-            background: linear-gradient(135deg, #4facfe, #00f2fe); 
+            color: #2e3440; 
+            background: linear-gradient(135deg, #88c0d0, #81a1c1); 
             display: inline-flex; 
             align-items: center; 
             gap: 0.3rem; 
             cursor: pointer; 
-            box-shadow: 0 7px 16px rgba(79, 172, 254, 0.4); 
+            box-shadow: 0 7px 16px rgba(136, 192, 208, 0.3); 
         } 
  
         #edit-users-btn:hover { 
-            filter: brightness(1.05); 
+            filter: brightness(1.1); 
             transform: translateY(-1px); 
-            box-shadow: 0 10px 20px rgba(79, 172, 254, 0.5); 
+            box-shadow: 0 10px 20px rgba(136, 192, 208, 0.4); 
         } 
  
         .edit-btn-icon { 
             width: 16px; 
             height: 16px; 
             border-radius: 999px; 
-            background: rgba(255,255,255,0.9); 
-            color: #4facfe; 
+            background: rgba(46, 52, 64, 0.3); 
+            color: #eceff4; 
             font-size: 0.7rem; 
             display: flex; 
             align-items: center; 
@@ -270,11 +326,11 @@
  
         .users-grid::-webkit-scrollbar { width: 6px; } 
         .users-grid::-webkit-scrollbar-track { 
-            background: #e6f7ff; 
+            background: rgba(46, 52, 64, 0.5); 
             border-radius: 999px; 
         } 
         .users-grid::-webkit-scrollbar-thumb { 
-            background: #b3e5fc; 
+            background: #4c566a; 
             border-radius: 999px; 
         } 
  
@@ -283,9 +339,9 @@
             position: relative; 
             border-radius: 18px; 
             padding: 0.75rem 0.8rem; 
-            background: radial-gradient(circle at top left, #e0f7fa, #ffebf4);
-            border: 1px solid rgba(255, 255, 255, 0.9); 
-            color: #3a1123; 
+            background: linear-gradient(145deg, rgba(59, 66, 82, 0.7), rgba(46, 52, 64, 0.8));
+            border: 1px solid rgba(136, 192, 208, 0.1); 
+            color: #eceff4; 
             cursor: pointer; 
             display: flex; 
             flex-direction: column; 
@@ -297,7 +353,7 @@
             /* animasi utama */ 
             opacity: 0; 
             transform: translateY(18px) scale(0.97); 
-            box-shadow: 0 9px 18px rgba(100, 149, 237, 0.15); 
+            box-shadow: 0 9px 18px rgba(0, 0, 0, 0.2); 
             transition: transform 0.16s ease, box-shadow 0.16s ease; 
  
             animation-name: popIn, floatGlow; 
@@ -315,8 +371,8 @@
             height: 120%; 
             top: -60%; 
             right: -40%; 
-            background: radial-gradient(circle, rgba(255,255,255,0.7), transparent 60%); 
-            opacity: 0.7; 
+            background: radial-gradient(circle, rgba(136, 192, 208, 0.1), transparent 60%); 
+            opacity: 0.5; 
             pointer-events: none; 
         } 
  
@@ -328,7 +384,7 @@
             top: 50%; 
             width: 10px; 
             height: 10px; 
-            background: rgba(255,255,255,0.75); 
+            background: rgba(255,255,255,0.3); 
             border-radius: 999px; 
             transform: translate(-50%, -50%) scale(0); 
             opacity: 0; 
@@ -343,9 +399,10 @@
         .user-card:hover { 
             transform: translateY(-3px) scale(1.01); 
             box-shadow: 
-                0 13px 26px rgba(100, 149, 237, 0.25), 
-                0 0 18px rgba(135, 206, 250, 0.25);
+                0 13px 26px rgba(0, 0, 0, 0.3), 
+                0 0 18px rgba(136, 192, 208, 0.15);
             animation: wobble 1s ease-in-out infinite;
+            border-color: rgba(136, 192, 208, 0.4);
         }
         
         @keyframes wobble {
@@ -356,7 +413,7 @@
  
         .user-card:active { 
             transform: translateY(1px) scale(0.99); 
-            box-shadow: 0 6px 13px rgba(100, 149, 237, 0.15); 
+            box-shadow: 0 6px 13px rgba(0, 0, 0, 0.2); 
         } 
  
         .user-card-header { 
@@ -371,14 +428,14 @@
             width: 32px; 
             height: 32px; 
             border-radius: 999px; 
-            background: rgba(255, 255, 255, 0.9); 
+            background: rgba(46, 52, 64, 0.8); 
             display: flex; 
             align-items: center; 
             justify-content: center; 
             font-size: 0.7rem; 
             font-weight: 700; 
-            color: #4facfe; 
-            box-shadow: 0 2px 6px rgba(79, 172, 254, 0.2); 
+            color: #88c0d0; 
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); 
         } 
  
         .user-name { 
@@ -388,11 +445,12 @@
             overflow: hidden; 
             white-space: nowrap; 
             text-overflow: ellipsis; 
+            color: #eceff4;
         } 
  
         .user-sub { 
             font-size: 0.7rem; 
-            color: #5f2241; 
+            color: #81a1c1; 
             opacity: 0.9; 
         } 
  
@@ -401,8 +459,8 @@
             font-size: 0.7rem; 
             padding: 0.2rem 0.55rem; 
             border-radius: 999px; 
-            border: 1px dashed rgba(255, 255, 255, 0.9); 
-            background: linear-gradient(90deg, rgba(255,255,255,0.65), rgba(255,255,255,0.35)); 
+            border: 1px dashed rgba(136, 192, 208, 0.4); 
+            background: linear-gradient(90deg, rgba(46, 52, 64, 0.65), rgba(46, 52, 64, 0.35)); 
             display: inline-flex; 
             align-items: center; 
             gap: 0.3rem; 
@@ -412,25 +470,26 @@
             width: 7px; 
             height: 7px; 
             border-radius: 999px; 
-            background: #4facfe; 
+            background: #a3be8c; 
         } 
  
         .footer-note { 
             margin-top: 0.5rem; 
             font-size: 0.72rem; 
             text-align: center; 
-            color: #9a6a86; 
+            color: #81a1c1; 
         } 
  
         /* EDIT PANEL */ 
         .edit-panel-backdrop { 
             position: fixed; 
             inset: 0; 
-            background: rgba(54, 7, 34, 0.45); 
+            background: rgba(0, 0, 0, 0.7); 
             display: none; 
             align-items: center; 
             justify-content: center; 
             z-index: 60; 
+            backdrop-filter: blur(5px);
         } 
  
         .edit-panel-backdrop.show { display: flex; } 
@@ -438,23 +497,23 @@
         .edit-panel { 
             width: 100%; 
             max-width: 420px; 
-            background: #fff5fb; 
+            background: #2e3440; 
             border-radius: 20px; 
-            border: 1px solid #ffc9e4; 
-            box-shadow: 0 20px 48px rgba(112, 16, 61, 0.45); 
+            border: 1px solid #4c566a; 
+            box-shadow: 0 20px 48px rgba(0, 0, 0, 0.5); 
             padding: 16px 16px 14px; 
         } 
  
         .edit-panel-title { 
             font-size: 1rem; 
             font-weight: 700; 
-            color: #3a1830; 
+            color: #eceff4; 
             margin-bottom: 0.2rem; 
         } 
  
         .edit-panel-sub { 
             font-size: 0.8rem; 
-            color: #85556e; 
+            color: #81a1c1; 
             margin-bottom: 0.7rem; 
         } 
  
@@ -467,7 +526,7 @@
  
         .edit-users-list::-webkit-scrollbar { width: 6px; } 
         .edit-users-list::-webkit-scrollbar-thumb { 
-            background: #ff9cc7; 
+            background: #4c566a; 
             border-radius: 999px; 
         } 
  
@@ -481,7 +540,7 @@
         .edit-label { 
             font-size: 0.78rem; 
             font-weight: 600; 
-            color: #7b3259; 
+            color: #d8dee9; 
             width: 68px; 
             flex-shrink: 0; 
         } 
@@ -489,16 +548,17 @@
         .edit-input { 
             flex: 1; 
             border-radius: 999px; 
-            border: 1px solid #ffc0df; 
+            border: 1px solid #4c566a; 
             padding: 0.32rem 0.7rem; 
             font-size: 0.8rem; 
             outline: none; 
-            background: #fff; 
+            background: #3b4252; 
+            color: #eceff4;
         } 
  
         .edit-input:focus { 
-            border-color: #ff6fa8; 
-            box-shadow: 0 0 0 2px rgba(255, 152, 203, 0.4); 
+            border-color: #88c0d0; 
+            box-shadow: 0 0 0 2px rgba(136, 192, 208, 0.2); 
         } 
  
         .edit-actions { 
@@ -510,79 +570,72 @@
  
         .btn-ghost { 
             border-radius: 999px; 
-            border: 1px solid #e3b6cf; 
+            border: 1px solid #4c566a; 
             background: transparent; 
             padding: 0.35rem 0.9rem; 
             font-size: 0.8rem; 
             cursor: pointer; 
-            color: #814461; 
+            color: #d8dee9; 
         } 
  
         .btn-primary { 
             border-radius: 999px; 
             border: none; 
-            background: linear-gradient(135deg, #ff6fa8, #ff93c0); 
+            background: linear-gradient(135deg, #5e81ac, #81a1c1); 
             padding: 0.38rem 1.1rem; 
             font-size: 0.8rem; 
             cursor: pointer; 
             font-weight: 600; 
             color: #fff; 
-            box-shadow: 0 7px 16px rgba(223, 88, 146, 0.6); 
+            box-shadow: 0 7px 16px rgba(94, 129, 172, 0.4); 
         } 
  
-        .btn-primary:hover { filter: brightness(1.03); } 
+        .btn-primary:hover { filter: brightness(1.1); } 
  
-        /* FAIRY DUST POINTER */ 
+        /* MIST PARTICLES */ 
         .fairy-dust { 
             position: fixed; 
             pointer-events: none; 
-            width: 8px; 
-            height: 8px; 
+            width: 6px; 
+            height: 6px; 
             border-radius: 50%; 
-            background: white; 
-            box-shadow: 0 0 10px #ff6fa8, 0 0 20px #ff94c1; 
+            background: rgba(236, 239, 244, 0.8); 
+            box-shadow: 0 0 5px rgba(136, 192, 208, 0.8), 0 0 10px rgba(136, 192, 208, 0.5); 
             animation: fadeOut 1s forwards; 
             z-index: 9999; 
         } 
  
         @keyframes fadeOut { 
-            0% { transform: scale(1); opacity: 1; } 
+            0% { transform: scale(1); opacity: 0.8; } 
             100% { transform: scale(0); opacity: 0; } 
         } 
  
-        /* BACKGROUND FLOATING BUBBLES */ 
+        /* BACKGROUND FLOATING MIST ORBS */ 
         .floating-bubble { 
             position: absolute; 
             border-radius: 50%; 
-            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(255,255,255,0.4) 20%, rgba(255,255,255,0) 60%);
-            box-shadow: inset 0 0 10px rgba(255,255,255,0.5), 0 0 10px rgba(255,255,255,0.2);
-            z-index: 0; 
+            background: radial-gradient(circle at 30% 30%, rgba(236, 239, 244, 0.2), transparent 70%);
+            box-shadow: 0 0 20px rgba(136, 192, 208, 0.1);
+            z-index: 2; 
             animation: floatUp linear infinite; 
             cursor: pointer;
-            border: 1px solid rgba(255,255,255,0.4);
+            border: none;
+            filter: blur(2px);
         }
 
         .floating-bubble::after {
-            content: '';
-            position: absolute;
-            top: 15%;
-            left: 20%;
-            width: 25%;
-            height: 15%;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.9);
-            transform: rotate(-45deg);
+            display: none;
         }
  
         @keyframes floatUp { 
-            0% { transform: translateY(100vh) scale(0); opacity: 0; } 
-            20% { opacity: 0.8; } 
-            80% { opacity: 0.8; } 
-            100% { transform: translateY(-10vh) scale(1.2); opacity: 0; } 
+            0% { transform: translateY(100vh) scale(0.5); opacity: 0; } 
+            20% { opacity: 0.4; } 
+            80% { opacity: 0.4; } 
+            100% { transform: translateY(-10vh) scale(1); opacity: 0; } 
         } 
 
         @keyframes pop {
-            0% { transform: scale(1); opacity: 0.8; }
+            0% { transform: scale(1); opacity: 0.4; }
             100% { transform: scale(1.5); opacity: 0; }
         }
         
@@ -604,15 +657,15 @@
  
         @keyframes floatGlow { 
             0% { 
-                box-shadow: 0 9px 18px rgba(225,103,157,0.40); 
+                box-shadow: 0 9px 18px rgba(0, 0, 0, 0.2); 
             } 
             50% { 
                 box-shadow: 
-                    0 12px 24px rgba(225,103,157,0.55), 
-                    0 0 14px rgba(255,130,190,0.45); 
+                    0 12px 24px rgba(0, 0, 0, 0.3), 
+                    0 0 14px rgba(136, 192, 208, 0.1); 
             } 
             100% { 
-                box-shadow: 0 9px 18px rgba(225,103,157,0.40); 
+                box-shadow: 0 9px 18px rgba(0, 0, 0, 0.2); 
             } 
         } 
  
@@ -641,7 +694,17 @@
         <span>Edit Nama User</span> 
     </button> 
  
-    <div class="foam-decoration"></div>
+    <!-- Fog Layers -->
+    <div class="fog-container">
+        <div class="fog-layer"></div>
+        <div class="fog-layer"></div>
+    </div>
+    
+    <!-- Nature Feature -->
+    <div class="forest-bg">
+        <div class="tree-line back"></div>
+        <div class="tree-line"></div>
+    </div>
 
     <div class="max-w-md mx-auto app-shell"> 
         <!-- WELCOME PAGE --> 
@@ -791,7 +854,7 @@
  
             // Transisi dari welcome ke main 
             startBtn.addEventListener('click', () => { 
-                // Confetti Explosion 
+                // Confetti Explosion (Updated Colors)
                 const duration = 2000; 
                 const end = Date.now() + duration; 
  
@@ -801,14 +864,14 @@
                         angle: 60, 
                         spread: 55, 
                         origin: { x: 0 }, 
-                        colors: ['#ff6fa8', '#ff94c1', '#ffd1e4'] 
+                        colors: ['#88c0d0', '#eceff4', '#5e81ac'] 
                     }); 
                     confetti({ 
                         particleCount: 7, 
                         angle: 120, 
                         spread: 55, 
                         origin: { x: 1 }, 
-                        colors: ['#ff6fa8', '#ff94c1', '#ffd1e4'] 
+                        colors: ['#88c0d0', '#eceff4', '#5e81ac'] 
                     }); 
  
                     if (Date.now() < end) { 
@@ -821,7 +884,7 @@
                         particleCount: 100, 
                         spread: 100, 
                         origin: { y: 0.6 }, 
-                        colors: ['#ff6fa8', '#e04584', '#ffffff'] 
+                        colors: ['#88c0d0', '#eceff4', '#81a1c1'] 
                     }); 
                 }, 300); 
  
@@ -922,15 +985,15 @@
                 affirmationEl.textContent = `“${randomAffirmation}”`; 
             } 
  
-            // Fairy Dust Cursor 
+            // Fairy Dust Cursor (Mist Particles)
             document.addEventListener('mousemove', (e) => { 
                 const dust = document.createElement('div'); 
                 dust.classList.add('fairy-dust'); 
                 dust.style.left = e.pageX + 'px'; 
                 dust.style.top = e.pageY + 'px'; 
                  
-                // Randomize color slightly 
-                const colors = ['#ff6fa8', '#ffd1e4', '#ffffff', '#fff5fb']; 
+                // Randomize color slightly (Cold tones)
+                const colors = ['#88c0d0', '#eceff4', '#81a1c1']; 
                 dust.style.background = colors[Math.floor(Math.random() * colors.length)]; 
                  
                 document.body.appendChild(dust); 
@@ -940,9 +1003,9 @@
                 }, 1000); 
             }); 
  
-            // Floating Bubbles Background 
+            // Floating Bubbles Background (Mist Orbs)
             function createBubbles() { 
-                const bubbleCount = 25; // More bubbles
+                const bubbleCount = 30; 
                 for (let i = 0; i < bubbleCount; i++) { 
                     const bubble = document.createElement('div'); 
                     bubble.classList.add('floating-bubble'); 
@@ -957,13 +1020,10 @@
                      
                     // Interactive Pop
                     bubble.addEventListener('click', (e) => {
-                        e.stopPropagation(); // prevent clicking things behind
+                        e.stopPropagation(); 
                         bubble.classList.add('bubble-pop');
                         setTimeout(() => {
                             bubble.remove();
-                            // Optional: Respawn bubble after pop? 
-                            // For now, let's just leave it as one-time fun or maybe add new one.
-                            // To keep it simple, just remove.
                         }, 300);
                     });
 
@@ -980,5 +1040,3 @@
         }); 
     </script> 
 </body> 
-
-</html>
