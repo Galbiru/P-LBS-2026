@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Arutala 2025</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Roboto Mono', monospace;
+            background-color: #000;
+            background-image: url("data:image/svg+xml,%3Csvg width='10' height='10' viewBox='0 0 10 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23111' fill-opacity='0.6' fill-rule='evenodd'%3E%3Cpath d='M0 10l10-10m-5 0l10 10m-5-10l10 10'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"),
+            linear-gradient(135deg, #111 0%, #000 100%);
+            min-height: 100vh;
+            transition: background-image 0.7s ease-in-out;
+            padding-top: 60px;
+            box-sizing: border-box;
+            color: #c0c0c0;
+        }
+
+        #welcome-page {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh;
+            text-align: center;
+        }
+
+        #welcome-page h2 {
+            font-size: 1.5rem;
+            font-weight: 500;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+            color: #888;
+        }
+
+        #welcome-page .welcome-title {
+            font-size: 2.7rem;
+            font-weight: 700;
+            color: #e0e0e0;
+            margin: 1rem 0 2rem 0;
+            white-space: pre-line;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.8);
+        }
+
+        #start-btn {
+            background-image: linear-gradient(to right, #212121 0%, #000000 51%, #212121 100%);
+            background-size: 200% auto;
+            color: #c0c0c0;
+            padding: 1rem 2rem;
+            border: 1px solid #333;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.5s;
+            box-shadow: 0 4px 15px 0 rgba(0,0,0,0.6);
+        }
+
+        #start-btn:hover {
+            background-position: right center;
+            color: #fff;
+        }
+
+        .main-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #e0e0e0;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .datetime {
+            text-align: center;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            color: #888;
+            font-weight: 600;
+            background-color: rgba(0,0,0,0.6);
+            backdrop-filter: blur(2px);
+            padding: 4px;
+            border-radius: 4px;
+            border: 1px solid #333;
+        }
+
+        .regional-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .users-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            justify-items: center;
+            max-height: calc(100vh - 250px); /* Disesuaikan agar ada ruang untuk tombol back */
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .regional-btn, .user-btn, .back-btn {
+            background-image: linear-gradient(to top, #444 0%, #222 100%);
+            color: #c0c0c0;
+            border: 1px solid #666;
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+        }
+
+        .user-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100px;
+            height: 100px;
+            padding: 0.5rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .user-btn:hover, .back-btn:hover {
+            transform: scale(1.05);
+            background-image: linear-gradient(to top, #555 0%, #333 100%);
+        }
+
+        .content-container {
+            padding: 1rem;
+            box-sizing: border-box;
+            background-color: rgba(0,0,0,0.4);
+            backdrop-filter: blur(3px);
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .user-details-text {
+            color: #c0c0c0;
+            margin-bottom: 1rem;
+            text-align: left;
+            background-color: #222;
+            backdrop-filter: blur(2px);
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid #333;
+        }
+
+        .user-details-text h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #e0e0e0;
+        }
+
+        .user-details-text ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        .number-grid {
+            display: grid;
+            grid-template-columns: repeat(1, minmax(0, 1fr));
+            gap: 4px;
+        }
+
+        .number-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+            font-size: 0.9rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.2s;
+            padding: 0.5rem 1rem;
+            background-color: #333;
+            border: 1px solid #444;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .number-btn:hover {
+            transform: translateY(-1px);
+            background-color: #444;
+        }
+
+        .number-btn.disabled {
+            background-color: #222;
+            border-color: #333;
+            color: #555;
+            cursor: not-allowed;
+        }
+
+        .number-btn.clicked {
+            background-color: #880000;
+            border-color: #660000;
+        }
+
+        .number-btn.clicked:hover {
+            background-color: #660000;
+        }
+
+        .fade-transition {
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .logo-top-left {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            z-index: 10;
+            max-width: 180px;
+            height: auto;
+            filter: invert(1) grayscale(1);
+        }
+
+        /* MEDIA QUERIES UNTUK TAMPILAN RESPONSIVE */
+        @media (max-width: 768px) {
+            #welcome-page .welcome-title {
+                font-size: 2rem;
+            }
+            .regional-btn {
+                font-size: 1rem;
+            }
+            .users-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+            .user-btn {
+                width: 120px;
+                height: 120px;
+            }
+            .logo-top-left {
+                max-width: 150px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #welcome-page .welcome-title {
+                font-size: 1.5rem;
+            }
+            .regional-btn {
+                font-size: 0.9rem;
+            }
+            .users-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .user-btn {
+                width: 100%;
+                height: 80px;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen p-4">
+    <img src="logo.png" alt="Project Arutala Logo" class="logo-top-left">
+
+    <div class="max-w-md mx-auto">
+        <div id="welcome-page" class="fade-transition" style="opacity: 1;">
+            <h2>WELCOME TO</h2>
+            <h1 class="welcome-title">Acorn Consultant<br>Quantity Project</h1>
+            <button id="start-btn" aria-label="Press start to continue">PRESS START TO CONTINUE</button>
+        </div>
+        <div id="main-view" class="fade-transition" style="display: none; opacity: 0;">
+            <h1 class="main-title text-center">PROJECT ARUTALA 2025</h1>
+            <div id="datetime" class="datetime"></div>
+            <div id="regional-buttons-container" class="regional-grid">
+                <button class="regional-btn" data-region="jakarta" aria-label="Select Jakarta region">JAKARTA</button>
+                <button class="regional-btn" data-region="bandung" aria-label="Select Bandung region">BANDUNG</button>
+            </div>
+            
+            <div id="back-to-regional-container" class="mb-4" style="display: none;"></div>
+
+            <div id="user-buttons-container" class="users-grid" style="display: none;"></div>
+        </div>
+        <div id="content-display-area"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let clickedNumbers = JSON.parse(localStorage.getItem('clickedNumbers')) || {};
+            let activeContentId = null;
+
+            const users = {
+                jakarta: [
+                    { id: 'rondang', name: 'Rondang', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
+                    { id: 'sulastri', name: 'Sulastri', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
+                    { id: 'evie', name: 'Evie', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
+                    { id: 'mawar', name: 'Mawar', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
+                    { id: 'srisuwarti', name: 'Sri Suwarti', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
+                    { id: 'yohanaami', name: 'Yohana Ami', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
+                    { id: 'neneng', name: 'Neneng', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
+                    { id: 'poppy', name: 'Poppy', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
+                    { id: 'rachma', name: 'Rachma', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
+                    { id: 'ninik', name: 'Ninik', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
+                    { id: 'rosi', name: 'Rosi', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
+                    { id: 'ariyuliawati', name: 'Ari Yuliawati', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
+                    { id: 'nurlaili', name: 'Nurlaili', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
+                ],
+                bandung: [
+                    { id: 'eka', name: 'Eka', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
+                    { id: 'popon', name: 'Popon', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
+                    { id: 'ria', name: 'Ria', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
+                    { id: 'ino', name: 'Ino', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
+                    { id: 'tatang', name: 'Tatang', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
+                    { id: 'nuki', name: 'Nuki', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
+                    { id: 'neti', name: 'Neti', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
+                    { id: 'renny', name: 'Renny', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
+                    { id: 'neni', name: 'Neni', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
+                    { id: 'dian', name: 'Dian', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
+                    { id: 'eni', name: 'Eni', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
+                    { id: 'ranny', name: 'Ranny', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
+                    { id: 'dani', name: 'Dani', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
+                    { id: 'rangga', name: 'Rangga', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
+                    { id: 'dewis', name: 'Dewi S', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
+                    { id: 'ikeu', name: 'Ikeu', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
+                    { id: 'indra', name: 'Indra', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
+                    { id: 'wike', name: 'Wike', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
+                ]
+            };
+
+            const welcomePage = document.getElementById('welcome-page');
+            const startBtn = document.getElementById('start-btn');
+            const mainView = document.getElementById('main-view');
+            const userButtonsContainer = document.getElementById('user-buttons-container');
+            const contentDisplayArea = document.getElementById('content-display-area');
+            const regionalButtonsContainer = document.getElementById('regional-buttons-container');
+            const backToRegionalContainer = document.getElementById('back-to-regional-container'); // [MODIFIKASI]
+
+            // [MODIFIKASI] Seluruh fungsi ini diubah untuk menambahkan tombol back
+            function generateUserButtons(region) {
+                userButtonsContainer.innerHTML = '';
+                backToRegionalContainer.innerHTML = ''; // Kosongkan kontainer tombol back sebelumnya
+
+                // 1. Buat tombol kembali
+                const backButton = document.createElement('button');
+                backButton.className = 'back-btn w-full'; // Memakai style .back-btn yang sudah ada
+                backButton.textContent = '← Kembali ke Pilihan Regional';
+                backButton.addEventListener('click', () => {
+                    regionalButtonsContainer.style.display = 'grid';
+                    userButtonsContainer.style.display = 'none';
+                    backToRegionalContainer.style.display = 'none';
+                    userButtonsContainer.innerHTML = ''; // Bersihkan user
+                    backToRegionalContainer.innerHTML = ''; // Bersihkan tombol back
+                });
+
+                backToRegionalContainer.appendChild(backButton);
+                backToRegionalContainer.style.display = 'block'; // Tampilkan kontainer tombol back
+
+                // 2. Buat tombol-tombol user (logika lama)
+                const userList = users[region];
+                userList.forEach(user => {
+                    const userButton = document.createElement('button');
+                    userButton.className = 'user-btn';
+                    userButton.textContent = user.name;
+                    userButton.dataset.target = user.id;
+                    userButtonsContainer.appendChild(userButton);
+                });
+
+                showScreen('main-view');
+                userButtonsContainer.style.display = 'grid';
+            }
+
+            function generateUserContent(user) {
+                const contentWrapper = document.getElementById(user.id);
+                if (contentWrapper) return;
+
+                const userDetailsHTML = `
+                    <div class="user-details-text">
+                        <h3 class="font-bold text-lg">${user.name}</h3>
+                        <ul class="list-none p-0 mt-2">
+                            <li><span class="font-semibold">- ID :</span> ${user.id}</li>
+                        </ul>
+                    </div>
+                `;
+
+                const url = user.links[0] || '#';
+                const isEnabled = user.links[0] ? '' : 'disabled';
+                const isClicked = clickedNumbers[user.id] ? 'clicked' : '';
+
+                const numberGridHTML = `<a href="${url}" target="_blank" rel="noopener noreferrer" class="number-btn ${isEnabled} ${isClicked}">Press For The Link</a>`;
+
+                const newContentWrapper = document.createElement('div');
+                newContentWrapper.id = user.id;
+                newContentWrapper.className = 'content-container fade-transition';
+                newContentWrapper.style.display = 'none';
+                newContentWrapper.style.opacity = '0';
+                newContentWrapper.innerHTML = `
+                    <button class="back-btn mb-4 w-full" aria-label="Back to regional menu">← Kembali ke Menu Regional</button>
+                    ${userDetailsHTML}
+                    <div class="number-grid">${numberGridHTML}</div>
+                `;
+                contentDisplayArea.appendChild(newContentWrapper);
+
+                newContentWrapper.querySelector('.back-btn').addEventListener('click', () => {
+                    showScreen('main-view');
+                    regionalButtonsContainer.style.display = 'grid';
+                    userButtonsContainer.style.display = 'none';
+                    backToRegionalContainer.style.display = 'none';
+                    contentDisplayArea.innerHTML = '';
+                });
+            }
+
+            function updateDateTime() {
+                const now = new Date();
+                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', timeZone: 'Asia/Jakarta' };
+                document.getElementById('datetime').textContent = now.toLocaleString('id-ID', options);
+            }
+
+            function showScreen(screenToShow) {
+                const allScreens = [welcomePage, mainView, ...Array.from(contentDisplayArea.children)];
+                allScreens.forEach(screen => {
+                    screen.style.display = 'none';
+                    screen.style.opacity = '0';
+                });
+
+                const screen = document.getElementById(screenToShow);
+                if (screen) {
+                    screen.style.display = 'block';
+                    setTimeout(() => screen.style.opacity = '1', 50);
+                }
+            }
+
+            regionalButtonsContainer.addEventListener('click', function(event) {
+                const target = event.target.closest('.regional-btn');
+                if (target) {
+                    const region = target.dataset.region;
+                    generateUserButtons(region);
+                    regionalButtonsContainer.style.display = 'none'; // Sembunyikan pilihan regional
+                }
+            });
+
+            userButtonsContainer.addEventListener('click', function(event) {
+                const target = event.target.closest('.user-btn');
+                if (target) {
+                    const userId = target.dataset.target;
+                    const user = users.jakarta.find(u => u.id === userId) || users.bandung.find(u => u.id === userId);
+                    if (user) {
+                        generateUserContent(user);
+                        showScreen(user.id);
+                    }
+                }
+            });
+
+            document.addEventListener('click', function(event) {
+                const target = event.target.closest('a.number-btn:not(.disabled)');
+                if (target) {
+                    const userId = target.closest('.content-container').id;
+                    clickedNumbers[userId] = true;
+                    localStorage.setItem('clickedNumbers', JSON.stringify(clickedNumbers));
+                    target.classList.add('clicked');
+                }
+            });
+
+            startBtn.addEventListener('click', () => {
+                welcomePage.style.opacity = '0';
+                setTimeout(() => {
+                    showScreen('main-view');
+                    regionalButtonsContainer.style.display = 'grid'; 
+                    userButtonsContainer.style.display = 'none';
+                    backToRegionalContainer.style.display = 'none'; // [MODIFIKASI] Pastikan ini tersembunyi
+                }, 500);
+            });
+
+            updateDateTime();
+            setInterval(updateDateTime, 1000);
+        });
+    </script>
+</body>
+</html>
