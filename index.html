@@ -1,480 +1,984 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project Arutala 2025</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap');
+<!DOCTYPE html> 
+<html lang="id"> 
+<head> 
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>LBS 2026 Project</title> 
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script> 
+    <script src="https://cdn.tailwindcss.com"></script> 
+    <style> 
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap'); 
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap'); 
+ 
+        :root { 
+            --pink-main: #ff85b3;
+            --pink-soft: #ffdcf0;
+            --blue-soft: #d0f0fd;
+            --white-soft: #fdfbff;
+            --dark-text: #2b2030; 
+        } 
+ 
+        * { box-sizing: border-box; } 
+ 
+        body { 
+            font-family: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; 
+            min-height: 100vh; 
+            /* Iridescent Shampoo Gradient */
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(208, 240, 253, 0.8), transparent 50%), 
+                radial-gradient(circle at 80% 80%, rgba(255, 182, 212, 0.8), transparent 50%), 
+                linear-gradient(135deg, #e6f7ff 0%, #fff0f6 50%, #e6fff0 100%); 
+            padding: 24px 12px 32px; 
+            color: var(--dark-text); 
+            overflow-x: hidden;
+            position: relative;
+        } 
 
-        body {
-            font-family: 'Roboto Mono', monospace;
-            background-color: #000;
-            background-image: url("data:image/svg+xml,%3Csvg width='10' height='10' viewBox='0 0 10 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23111' fill-opacity='0.6' fill-rule='evenodd'%3E%3Cpath d='M0 10l10-10m-5 0l10 10m-5-10l10 10'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"),
-            linear-gradient(135deg, #111 0%, #000 100%);
-            min-height: 100vh;
-            transition: background-image 0.7s ease-in-out;
-            padding-top: 60px;
-            box-sizing: border-box;
-            color: #c0c0c0;
-        }
-
-        #welcome-page {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            min-height: 80vh;
-            text-align: center;
-        }
-
-        #welcome-page h2 {
-            font-size: 1.5rem;
-            font-weight: 500;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
-            color: #888;
-        }
-
-        #welcome-page .welcome-title {
-            font-size: 2.7rem;
-            font-weight: 700;
-            color: #e0e0e0;
-            margin: 1rem 0 2rem 0;
-            white-space: pre-line;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.8);
-        }
-
-        #start-btn {
-            background-image: linear-gradient(to right, #212121 0%, #000000 51%, #212121 100%);
-            background-size: 200% auto;
-            color: #c0c0c0;
-            padding: 1rem 2rem;
-            border: 1px solid #333;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.5s;
-            box-shadow: 0 4px 15px 0 rgba(0,0,0,0.6);
-        }
-
-        #start-btn:hover {
-            background-position: right center;
-            color: #fff;
-        }
-
-        .main-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            color: #e0e0e0;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-        }
-
-        .datetime {
-            text-align: center;
-            margin-bottom: 1rem;
-            font-size: 1rem;
-            color: #888;
-            font-weight: 600;
-            background-color: rgba(0,0,0,0.6);
-            backdrop-filter: blur(2px);
-            padding: 4px;
-            border-radius: 4px;
-            border: 1px solid #333;
-        }
-
-        .regional-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .users-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
-            justify-items: center;
-            max-height: calc(100vh - 250px); /* Disesuaikan agar ada ruang untuk tombol back */
-            overflow-y: auto;
-            padding-right: 10px;
-        }
-
-        .regional-btn, .user-btn, .back-btn {
-            background-image: linear-gradient(to top, #444 0%, #222 100%);
-            color: #c0c0c0;
-            border: 1px solid #666;
-            padding: 1rem;
-            border-radius: 8px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.5);
-        }
-
-        .user-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100px;
-            height: 100px;
-            padding: 0.5rem;
-            font-weight: 600;
-            text-align: center;
-        }
-
-        .user-btn:hover, .back-btn:hover {
-            transform: scale(1.05);
-            background-image: linear-gradient(to top, #555 0%, #333 100%);
-        }
-
-        .content-container {
-            padding: 1rem;
-            box-sizing: border-box;
-            background-color: rgba(0,0,0,0.4);
-            backdrop-filter: blur(3px);
-            border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .user-details-text {
-            color: #c0c0c0;
-            margin-bottom: 1rem;
-            text-align: left;
-            background-color: #222;
-            backdrop-filter: blur(2px);
-            padding: 1rem;
-            border-radius: 8px;
-            border: 1px solid #333;
-        }
-
-        .user-details-text h3 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            color: #e0e0e0;
-        }
-
-        .user-details-text ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            font-size: 0.9rem;
-        }
-
-        .number-grid {
-            display: grid;
-            grid-template-columns: repeat(1, minmax(0, 1fr));
-            gap: 4px;
-        }
-
-        .number-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 500;
-            font-size: 0.9rem;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.2s, transform 0.2s;
-            padding: 0.5rem 1rem;
-            background-color: #333;
-            border: 1px solid #444;
-            color: #fff;
-            text-decoration: none;
-        }
-
-        .number-btn:hover {
-            transform: translateY(-1px);
-            background-color: #444;
-        }
-
-        .number-btn.disabled {
-            background-color: #222;
-            border-color: #333;
-            color: #555;
-            cursor: not-allowed;
-        }
-
-        .number-btn.clicked {
-            background-color: #880000;
-            border-color: #660000;
-        }
-
-        .number-btn.clicked:hover {
-            background-color: #660000;
-        }
-
-        .fade-transition {
-            transition: opacity 0.5s ease-in-out;
-        }
-
-        .logo-top-left {
+        /* Foam Decoration */
+        .foam-decoration {
             position: fixed;
-            top: 10px;
-            left: 10px;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background-image: radial-gradient(circle at 10px 10px, rgba(255,255,255,0.8) 10px, transparent 11px);
+            background-size: 30px 40px;
+            background-repeat: repeat-x;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+ 
+        .app-shell { 
+            background: rgba(255, 255, 255, 0.75); 
+            backdrop-filter: blur(14px); 
+            border-radius: 26px; 
+            box-shadow: 0 18px 40px rgba(100, 149, 237, 0.15); 
+            border: 1px solid rgba(255, 255, 255, 0.6); 
+            padding: 24px 18px 20px; 
+            position: relative;
             z-index: 10;
-            max-width: 180px;
-            height: auto;
-            filter: invert(1) grayscale(1);
+        } 
+ 
+        .fade-transition { transition: opacity 0.4s ease; } 
+ 
+        /* WELCOME PAGE */ 
+        #welcome-page { 
+            min-height: 70vh; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            text-align: center; 
+        } 
+ 
+        .welcome-tag { 
+            letter-spacing: 0.25em; 
+            font-size: 0.75rem; 
+            text-transform: uppercase; 
+            color: #5588a3; 
+        } 
+ 
+        .welcome-title { 
+            font-family: 'Roboto Mono', monospace; 
+            font-size: 2.15rem; 
+            font-weight: 700; 
+            line-height: 1.2; 
+            margin-top: 0.75rem; 
+            margin-bottom: 0.3rem; 
+            background: linear-gradient(135deg, #ff6fa8, #4facfe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        } 
+ 
+        .welcome-sub { 
+            font-size: 0.95rem; 
+            color: #5d7482; 
+        } 
+ 
+        #start-btn { 
+            margin-top: 1.9rem; 
+            padding: 0.9rem 3rem; 
+            border-radius: 999px; 
+            border: none; 
+            font-weight: 700; 
+            font-size: 0.9rem; 
+            letter-spacing: 0.16em; 
+            text-transform: uppercase; 
+            cursor: pointer; 
+            background-image: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%); 
+            background-size: 200% auto; 
+            color: white; 
+            box-shadow: 0 10px 25px rgba(161, 140, 209, 0.4); 
+            transition: 
+                background-position 0.4s ease, 
+                transform 0.16s ease, 
+                box-shadow 0.16s ease; 
+        } 
+ 
+        #start-btn:hover { 
+            background-position: right center; 
+            transform: translateY(-1px); 
+            box-shadow: 0 14px 30px rgba(161, 140, 209, 0.5); 
+        } 
+ 
+        #start-btn:active { 
+            transform: translateY(1px) scale(0.98); 
+            box-shadow: 0 6px 16px rgba(161, 140, 209, 0.45); 
+        } 
+ 
+        /* MAIN HEADER */ 
+        .main-header { 
+            text-align: center; 
+            margin-bottom: 0.9rem; 
+            position: relative; 
+            z-index: 10; 
+        } 
+ 
+        .main-pill { 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 0.35rem; 
+            font-size: 0.72rem; 
+            text-transform: uppercase; 
+            letter-spacing: 0.18em; 
+            padding: 0.32rem 0.9rem; 
+            border-radius: 999px; 
+            background: rgba(208, 240, 253, 0.45); 
+            border: 1px solid rgba(135, 206, 250, 0.5); 
+            color: #4facfe; 
+            margin-bottom: 0.5rem; 
+        } 
+ 
+        .main-title { 
+            font-family: 'Roboto Mono', monospace; 
+            font-size: 1.55rem; 
+            font-weight: 700; 
+            color: #3a2237; 
+        } 
+ 
+        .daily-affirmation { 
+            font-family: 'Poppins', sans-serif; 
+            font-size: 0.9rem; 
+            color: #5d7482; 
+            font-style: italic; 
+            margin: 0.2rem auto 0.5rem; 
+            max-width: 80%; 
+            line-height: 1.4; 
+        } 
+ 
+        .datetime-wrapper { 
+            display: flex; 
+            justify-content: center; 
+            margin-top: 0.4rem; 
+            margin-bottom: 1rem; 
+        } 
+ 
+        .datetime { 
+            font-size: 0.8rem; 
+            color: #5d7482; 
+            font-weight: 500; 
+            background: #f0f8ff; 
+            border-radius: 999px; 
+            padding: 0.43rem 1.2rem; 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 0.35rem; 
+        } 
+ 
+        .clock-dot { 
+            width: 8px; 
+            height: 8px; 
+            border-radius: 999px; 
+            background: #4facfe; 
+            box-shadow: 0 0 0 4px rgba(79, 172, 254, 0.25); 
+        } 
+ 
+        .top-actions { 
+            display: flex; 
+            justify-content: flex-start; 
+            align-items: center; 
+            gap: 0.5rem; 
+            margin-bottom: 0.6rem; 
+            flex-wrap: wrap; 
+        } 
+ 
+        .info-text { 
+            font-size: 0.78rem; 
+            color: #8b637e; 
+            display: flex; 
+            align-items: center; 
+            gap: 0.35rem; 
+        } 
+ 
+        .info-dot { 
+            width: 6px; 
+            height: 6px; 
+            border-radius: 999px; 
+            background: var(--pink-main); 
+        } 
+ 
+        /* TOMBOL EDIT USER DI POJOK KANAN ATAS (FIXED) */ 
+        #edit-users-btn { 
+            position: fixed; 
+            top: 12px; 
+            right: 12px; 
+            z-index: 50; 
+            border-radius: 999px; 
+            border: none; 
+            padding: 0.5rem 1.1rem; 
+            font-size: 0.78rem; 
+            font-weight: 600; 
+            color: #fff; 
+            background: linear-gradient(135deg, #4facfe, #00f2fe); 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 0.3rem; 
+            cursor: pointer; 
+            box-shadow: 0 7px 16px rgba(79, 172, 254, 0.4); 
+        } 
+ 
+        #edit-users-btn:hover { 
+            filter: brightness(1.05); 
+            transform: translateY(-1px); 
+            box-shadow: 0 10px 20px rgba(79, 172, 254, 0.5); 
+        } 
+ 
+        .edit-btn-icon { 
+            width: 16px; 
+            height: 16px; 
+            border-radius: 999px; 
+            background: rgba(255,255,255,0.9); 
+            color: #4facfe; 
+            font-size: 0.7rem; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+        } 
+ 
+        /* GRID USER */ 
+        .users-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); 
+            gap: 0.9rem; 
+            margin-top: 0.6rem; 
+            margin-bottom: 0.2rem; 
+            max-height: calc(100vh - 270px); 
+            overflow-y: auto; 
+            padding-right: 4px; 
+        } 
+ 
+        .users-grid::-webkit-scrollbar { width: 6px; } 
+        .users-grid::-webkit-scrollbar-track { 
+            background: #e6f7ff; 
+            border-radius: 999px; 
+        } 
+        .users-grid::-webkit-scrollbar-thumb { 
+            background: #b3e5fc; 
+            border-radius: 999px; 
+        } 
+ 
+        /* KARTU USER – DESAIN + ANIMASI */ 
+        .user-card { 
+            position: relative; 
+            border-radius: 18px; 
+            padding: 0.75rem 0.8rem; 
+            background: radial-gradient(circle at top left, #e0f7fa, #ffebf4);
+            border: 1px solid rgba(255, 255, 255, 0.9); 
+            color: #3a1123; 
+            cursor: pointer; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: flex-start; 
+            justify-content: space-between; 
+            min-height: 86px; 
+            overflow: hidden; 
+ 
+            /* animasi utama */ 
+            opacity: 0; 
+            transform: translateY(18px) scale(0.97); 
+            box-shadow: 0 9px 18px rgba(100, 149, 237, 0.15); 
+            transition: transform 0.16s ease, box-shadow 0.16s ease; 
+ 
+            animation-name: popIn, floatGlow; 
+            animation-duration: 0.45s, 3.2s; 
+            animation-timing-function: ease, ease-in-out; 
+            animation-fill-mode: forwards, both; 
+            animation-iteration-count: 1, infinite; 
+            animation-delay: var(--stagger, 0s), 0.6s; 
+        } 
+ 
+        .user-card::before { 
+            content: ""; 
+            position: absolute; 
+            width: 120%; 
+            height: 120%; 
+            top: -60%; 
+            right: -40%; 
+            background: radial-gradient(circle, rgba(255,255,255,0.7), transparent 60%); 
+            opacity: 0.7; 
+            pointer-events: none; 
+        } 
+ 
+        /* RIPPLE CLICK */ 
+        .user-card::after { 
+            content: ""; 
+            position: absolute; 
+            left: 50%; 
+            top: 50%; 
+            width: 10px; 
+            height: 10px; 
+            background: rgba(255,255,255,0.75); 
+            border-radius: 999px; 
+            transform: translate(-50%, -50%) scale(0); 
+            opacity: 0; 
+            pointer-events: none; 
+        } 
+ 
+        .user-card:active::after { 
+            animation: ripple 0.5s ease-out; 
+        } 
+ 
+        /* HOVER GLOW & WOBBLE */ 
+        .user-card:hover { 
+            transform: translateY(-3px) scale(1.01); 
+            box-shadow: 
+                0 13px 26px rgba(100, 149, 237, 0.25), 
+                0 0 18px rgba(135, 206, 250, 0.25);
+            animation: wobble 1s ease-in-out infinite;
+        }
+        
+        @keyframes wobble {
+            0%, 100% { transform: translateY(-3px) rotate(0deg); }
+            25% { transform: translateY(-3px) rotate(-1deg); }
+            75% { transform: translateY(-3px) rotate(1deg); }
+        }
+ 
+        .user-card:active { 
+            transform: translateY(1px) scale(0.99); 
+            box-shadow: 0 6px 13px rgba(100, 149, 237, 0.15); 
+        } 
+ 
+        .user-card-header { 
+            display: flex; 
+            width: 100%; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 0.2rem; 
+        } 
+ 
+        .user-badge { 
+            width: 32px; 
+            height: 32px; 
+            border-radius: 999px; 
+            background: rgba(255, 255, 255, 0.9); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 0.7rem; 
+            font-weight: 700; 
+            color: #4facfe; 
+            box-shadow: 0 2px 6px rgba(79, 172, 254, 0.2); 
+        } 
+ 
+        .user-name { 
+            font-weight: 700; 
+            font-size: 0.95rem; 
+            max-width: 80px; 
+            overflow: hidden; 
+            white-space: nowrap; 
+            text-overflow: ellipsis; 
+        } 
+ 
+        .user-sub { 
+            font-size: 0.7rem; 
+            color: #5f2241; 
+            opacity: 0.9; 
+        } 
+ 
+        .user-pill { 
+            margin-top: 0.3rem; 
+            font-size: 0.7rem; 
+            padding: 0.2rem 0.55rem; 
+            border-radius: 999px; 
+            border: 1px dashed rgba(255, 255, 255, 0.9); 
+            background: linear-gradient(90deg, rgba(255,255,255,0.65), rgba(255,255,255,0.35)); 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 0.3rem; 
+        } 
+ 
+        .user-pill-dot { 
+            width: 7px; 
+            height: 7px; 
+            border-radius: 999px; 
+            background: #4facfe; 
+        } 
+ 
+        .footer-note { 
+            margin-top: 0.5rem; 
+            font-size: 0.72rem; 
+            text-align: center; 
+            color: #9a6a86; 
+        } 
+ 
+        /* EDIT PANEL */ 
+        .edit-panel-backdrop { 
+            position: fixed; 
+            inset: 0; 
+            background: rgba(54, 7, 34, 0.45); 
+            display: none; 
+            align-items: center; 
+            justify-content: center; 
+            z-index: 60; 
+        } 
+ 
+        .edit-panel-backdrop.show { display: flex; } 
+ 
+        .edit-panel { 
+            width: 100%; 
+            max-width: 420px; 
+            background: #fff5fb; 
+            border-radius: 20px; 
+            border: 1px solid #ffc9e4; 
+            box-shadow: 0 20px 48px rgba(112, 16, 61, 0.45); 
+            padding: 16px 16px 14px; 
+        } 
+ 
+        .edit-panel-title { 
+            font-size: 1rem; 
+            font-weight: 700; 
+            color: #3a1830; 
+            margin-bottom: 0.2rem; 
+        } 
+ 
+        .edit-panel-sub { 
+            font-size: 0.8rem; 
+            color: #85556e; 
+            margin-bottom: 0.7rem; 
+        } 
+ 
+        .edit-users-list { 
+            max-height: 260px; 
+            overflow-y: auto; 
+            padding-right: 4px; 
+            margin-bottom: 0.7rem; 
+        } 
+ 
+        .edit-users-list::-webkit-scrollbar { width: 6px; } 
+        .edit-users-list::-webkit-scrollbar-thumb { 
+            background: #ff9cc7; 
+            border-radius: 999px; 
+        } 
+ 
+        .edit-row { 
+            display: flex; 
+            align-items: center; 
+            gap: 0.5rem; 
+            margin-bottom: 0.45rem; 
+        } 
+ 
+        .edit-label { 
+            font-size: 0.78rem; 
+            font-weight: 600; 
+            color: #7b3259; 
+            width: 68px; 
+            flex-shrink: 0; 
+        } 
+ 
+        .edit-input { 
+            flex: 1; 
+            border-radius: 999px; 
+            border: 1px solid #ffc0df; 
+            padding: 0.32rem 0.7rem; 
+            font-size: 0.8rem; 
+            outline: none; 
+            background: #fff; 
+        } 
+ 
+        .edit-input:focus { 
+            border-color: #ff6fa8; 
+            box-shadow: 0 0 0 2px rgba(255, 152, 203, 0.4); 
+        } 
+ 
+        .edit-actions { 
+            display: flex; 
+            justify-content: flex-end; 
+            gap: 0.5rem; 
+            margin-top: 0.1rem; 
+        } 
+ 
+        .btn-ghost { 
+            border-radius: 999px; 
+            border: 1px solid #e3b6cf; 
+            background: transparent; 
+            padding: 0.35rem 0.9rem; 
+            font-size: 0.8rem; 
+            cursor: pointer; 
+            color: #814461; 
+        } 
+ 
+        .btn-primary { 
+            border-radius: 999px; 
+            border: none; 
+            background: linear-gradient(135deg, #ff6fa8, #ff93c0); 
+            padding: 0.38rem 1.1rem; 
+            font-size: 0.8rem; 
+            cursor: pointer; 
+            font-weight: 600; 
+            color: #fff; 
+            box-shadow: 0 7px 16px rgba(223, 88, 146, 0.6); 
+        } 
+ 
+        .btn-primary:hover { filter: brightness(1.03); } 
+ 
+        /* FAIRY DUST POINTER */ 
+        .fairy-dust { 
+            position: fixed; 
+            pointer-events: none; 
+            width: 8px; 
+            height: 8px; 
+            border-radius: 50%; 
+            background: white; 
+            box-shadow: 0 0 10px #ff6fa8, 0 0 20px #ff94c1; 
+            animation: fadeOut 1s forwards; 
+            z-index: 9999; 
+        } 
+ 
+        @keyframes fadeOut { 
+            0% { transform: scale(1); opacity: 1; } 
+            100% { transform: scale(0); opacity: 0; } 
+        } 
+ 
+        /* BACKGROUND FLOATING BUBBLES */ 
+        .floating-bubble { 
+            position: absolute; 
+            border-radius: 50%; 
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(255,255,255,0.4) 20%, rgba(255,255,255,0) 60%);
+            box-shadow: inset 0 0 10px rgba(255,255,255,0.5), 0 0 10px rgba(255,255,255,0.2);
+            z-index: 0; 
+            animation: floatUp linear infinite; 
+            cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.4);
         }
 
-        /* MEDIA QUERIES UNTUK TAMPILAN RESPONSIVE */
-        @media (max-width: 768px) {
-            #welcome-page .welcome-title {
-                font-size: 2rem;
-            }
-            .regional-btn {
-                font-size: 1rem;
-            }
-            .users-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 1rem;
-            }
-            .user-btn {
-                width: 120px;
-                height: 120px;
-            }
-            .logo-top-left {
-                max-width: 150px;
-            }
+        .floating-bubble::after {
+            content: '';
+            position: absolute;
+            top: 15%;
+            left: 20%;
+            width: 25%;
+            height: 15%;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.9);
+            transform: rotate(-45deg);
         }
+ 
+        @keyframes floatUp { 
+            0% { transform: translateY(100vh) scale(0); opacity: 0; } 
+            20% { opacity: 0.8; } 
+            80% { opacity: 0.8; } 
+            100% { transform: translateY(-10vh) scale(1.2); opacity: 0; } 
+        } 
 
-        @media (max-width: 480px) {
-            #welcome-page .welcome-title {
-                font-size: 1.5rem;
-            }
-            .regional-btn {
-                font-size: 0.9rem;
-            }
-            .users-grid {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-            }
-            .user-btn {
-                width: 100%;
-                height: 80px;
-            }
+        @keyframes pop {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.5); opacity: 0; }
         }
-    </style>
-</head>
-<body class="min-h-screen p-4">
-    <img src="logo.png" alt="Project Arutala Logo" class="logo-top-left">
+        
+        .bubble-pop {
+            animation: pop 0.3s ease-out forwards !important;
+        }
+ 
+        /* ANIMASI KEYFRAMES */ 
+        @keyframes popIn { 
+            0% { 
+                opacity: 0; 
+                transform: translateY(18px) scale(0.9); 
+            } 
+            100% { 
+                opacity: 1; 
+                transform: translateY(0) scale(1); 
+            } 
+        } 
+ 
+        @keyframes floatGlow { 
+            0% { 
+                box-shadow: 0 9px 18px rgba(225,103,157,0.40); 
+            } 
+            50% { 
+                box-shadow: 
+                    0 12px 24px rgba(225,103,157,0.55), 
+                    0 0 14px rgba(255,130,190,0.45); 
+            } 
+            100% { 
+                box-shadow: 0 9px 18px rgba(225,103,157,0.40); 
+            } 
+        } 
+ 
+        @keyframes ripple { 
+            0% { 
+                transform: translate(-50%, -50%) scale(0); 
+                opacity: 0.7; 
+            } 
+            100% { 
+                transform: translate(-50%, -50%) scale(18); 
+                opacity: 0; 
+            } 
+        } 
+ 
+        @media (max-width: 640px) { 
+            .app-shell { padding: 20px 14px 18px; } 
+            .welcome-title { font-size: 1.8rem; } 
+            .main-title { font-size: 1.35rem; } 
+        } 
+    </style> 
+</head> 
+<body> 
+    <!-- Tombol Edit User di pojok kanan atas --> 
+    <button id="edit-users-btn" type="button"> 
+        <span class="edit-btn-icon">✎</span> 
+        <span>Edit Nama User</span> 
+    </button> 
+ 
+    <div class="foam-decoration"></div>
 
-    <div class="max-w-md mx-auto">
-        <div id="welcome-page" class="fade-transition" style="opacity: 1;">
-            <h2>WELCOME TO</h2>
-            <h1 class="welcome-title">Acorn Consultant<br>Quantity Project</h1>
-            <button id="start-btn" aria-label="Press start to continue">PRESS START TO CONTINUE</button>
-        </div>
-        <div id="main-view" class="fade-transition" style="display: none; opacity: 0;">
-            <h1 class="main-title text-center">PROJECT ARUTALA 2025</h1>
-            <div id="datetime" class="datetime"></div>
-            <div id="regional-buttons-container" class="regional-grid">
-                <button class="regional-btn" data-region="jakarta" aria-label="Select Jakarta region">JAKARTA</button>
-                <button class="regional-btn" data-region="bandung" aria-label="Select Bandung region">BANDUNG</button>
-            </div>
-            
-            <div id="back-to-regional-container" class="mb-4" style="display: none;"></div>
+    <div class="max-w-md mx-auto app-shell"> 
+        <!-- WELCOME PAGE --> 
+        <div id="welcome-page" class="fade-transition" style="opacity: 1;"> 
+            <div class="welcome-tag">WELCOME TO</div> 
+            <h1 class="welcome-title">Acorn Consultant<br>LBS 2026 Project</h1> 
+            <p class="welcome-sub"> 
+                LBS 2026 Project • Akses survey terorganisir untuk setiap user. 
+            </p> 
+            <button id="start-btn">PRESS START TO CONTINUE</button> 
+        </div> 
+ 
+        <!-- MAIN VIEW --> 
+        <div id="main-view" class="fade-transition" style="display:none; opacity:0;"> 
+            <div class="main-header"> 
+                <div class="main-pill"> 
+                    <span>LBS 2026 Project</span> 
+                </div> 
+                <h1 class="main-title">User Survey Panel</h1> 
+                <div id="daily-affirmation" class="daily-affirmation"></div> 
+                <div class="datetime-wrapper"> 
+                    <div class="datetime"> 
+                        <span class="clock-dot"></span> 
+                        <span id="datetime-text"></span> 
+                    </div> 
+                </div> 
+            </div> 
+ 
+            <div class="top-actions"> 
+                <div class="info-text"> 
+                    <span class="info-dot"></span> 
+                    <span>Tap kartu user untuk membuka link survey</span> 
+                </div> 
+            </div> 
+ 
+            <div id="users-grid" class="users-grid"></div> 
+ 
+            <div class="footer-note"> 
+                Good luck!!!. 
+            </div> 
+        </div> 
+    </div> 
+ 
+    <!-- MODAL EDIT NAMA USER --> 
+    <div id="edit-panel-backdrop" class="edit-panel-backdrop"> 
+        <div class="edit-panel"> 
+            <div class="edit-panel-title">Edit Nama User</div> 
+            <div class="edit-panel-sub"> 
+                Gunakan untuk mengganti label <strong>User 1 – User 10</strong> sesuai kebutuhan. 
+            </div> 
+            <div id="edit-users-list" class="edit-users-list"></div> 
+            <div class="edit-actions"> 
+                <button id="edit-cancel" class="btn-ghost" type="button">Batal</button> 
+                <button id="edit-save" class="btn-primary" type="button">Simpan</button> 
+            </div> 
+        </div> 
+    </div> 
+ 
+    <script> 
+        document.addEventListener('DOMContentLoaded', () => { 
+            const SURVEY_LINK = "https://www.dooblocawi.com/client/Survey.aspx?Ticket=QGBFNFCV"; 
+            const PASSWORD_EDIT = "Aco123"; 
+ 
+            const welcomePage = document.getElementById('welcome-page'); 
+            const startBtn = document.getElementById('start-btn'); 
+            const mainView = document.getElementById('main-view'); 
+            const usersGrid = document.getElementById('users-grid'); 
+            const datetimeText = document.getElementById('datetime-text'); 
+ 
+            const editBtn = document.getElementById('edit-users-btn'); 
+            const editBackdrop = document.getElementById('edit-panel-backdrop'); 
+            const editUsersList = document.getElementById('edit-users-list'); 
+            const editCancel = document.getElementById('edit-cancel'); 
+            const editSave = document.getElementById('edit-save'); 
+ 
+            // Data user default 
+            const users = []; 
+            const defaultNames = [ 
+                "Lisa Halim", "Mawar", "Sulastri", "Popy", "Pasuleny",  
+                "Anisa", "Adjeng", "Dewi", "Evie Bungai", "Putri Wahyu", "Alevira", "Sulisyuowaty" 
+            ]; 
+ 
+            for (let i = 0; i < 10; i++) { 
+                const id = `user${String(i + 1).padStart(2, '0')}`; 
+                users.push({ 
+                    id, 
+                    name: defaultNames[i] 
+                }); 
+            } 
+ 
+            // Load custom nama dari localStorage (v2 to reset defaults) 
+            const storedNames = JSON.parse(localStorage.getItem('ShankaraUserNames_v2') || '{}'); 
+            if (storedNames && typeof storedNames === 'object') { 
+                users.forEach(u => { 
+                    if (storedNames[u.id]) { 
+                        u.name = storedNames[u.id]; 
+                    } 
+                }); 
+            } 
+ 
+            // Render kartu user 
+            function renderUserGrid() { 
+                usersGrid.innerHTML = ''; 
+                users.forEach((user, index) => { 
+                    const btn = document.createElement('button'); 
+                    btn.type = 'button'; 
+                    btn.className = 'user-card'; 
+                    btn.style.setProperty('--stagger', (index * 0.08) + 's'); 
+ 
+                    btn.innerHTML = ` 
+                        <div class="user-card-header"> 
+                            <div class="user-badge">#${index + 1}</div> 
+                            <div style="text-align:right;"> 
+                                <div class="user-name" title="${user.name}">${user.name}</div> 
+                                <div class="user-sub">Survey LBS 2026</div> 
+                            </div> 
+                        </div> 
+                        <div class="user-pill"> 
+                            <span class="user-pill-dot"></span> 
+                            <span>Buka link survey</span> 
+                        </div> 
+                    `; 
+ 
+                    btn.addEventListener('click', () => { 
+                        window.open(SURVEY_LINK, '_blank', 'noopener,noreferrer'); 
+                    }); 
+ 
+                    usersGrid.appendChild(btn); 
+                }); 
+            } 
+ 
+            // Update datetime (Asia/Jakarta) 
+            function updateDateTime() { 
+                const now = new Date(); 
+                const options = { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric', 
+                    hour: '2-digit', 
+                    minute: '2-digit', 
+                    second: '2-digit', 
+                    timeZone: 'Asia/Jakarta' 
+                }; 
+                datetimeText.textContent = now.toLocaleString('id-ID', options); 
+            } 
+ 
+            // Transisi dari welcome ke main 
+            startBtn.addEventListener('click', () => { 
+                // Confetti Explosion 
+                const duration = 2000; 
+                const end = Date.now() + duration; 
+ 
+                (function frame() { 
+                    confetti({ 
+                        particleCount: 7, 
+                        angle: 60, 
+                        spread: 55, 
+                        origin: { x: 0 }, 
+                        colors: ['#ff6fa8', '#ff94c1', '#ffd1e4'] 
+                    }); 
+                    confetti({ 
+                        particleCount: 7, 
+                        angle: 120, 
+                        spread: 55, 
+                        origin: { x: 1 }, 
+                        colors: ['#ff6fa8', '#ff94c1', '#ffd1e4'] 
+                    }); 
+ 
+                    if (Date.now() < end) { 
+                        requestAnimationFrame(frame); 
+                    } 
+                }()); 
+ 
+                setTimeout(() => { 
+                    confetti({ 
+                        particleCount: 100, 
+                        spread: 100, 
+                        origin: { y: 0.6 }, 
+                        colors: ['#ff6fa8', '#e04584', '#ffffff'] 
+                    }); 
+                }, 300); 
+ 
+                welcomePage.style.opacity = '0'; 
+                setTimeout(() => { 
+                    welcomePage.style.display = 'none'; 
+                    mainView.style.display = 'block'; 
+                    requestAnimationFrame(() => { 
+                        mainView.style.opacity = '1'; 
+                    }); 
+                }, 400); 
+            }); 
+ 
+            // Buka panel edit (dengan password) 
+            editBtn.addEventListener('click', () => { 
+                const pwd = prompt('Masukkan password untuk mengedit nama user:'); 
+                if (pwd === null) return; 
+                if (pwd !== PASSWORD_EDIT) { 
+                    alert('Password salah.'); 
+                    return; 
+                } 
+                openEditPanel(); 
+            }); 
+ 
+            function openEditPanel() { 
+                editUsersList.innerHTML = ''; 
+                users.forEach((user, index) => { 
+                    const row = document.createElement('div'); 
+                    row.className = 'edit-row'; 
+                    row.innerHTML = ` 
+                        <div class="edit-label">User ${index + 1}</div> 
+                        <input 
+                            type="text" 
+                            class="edit-input" 
+                            data-id="${user.id}" 
+                            value="${user.name}" 
+                            maxlength="30" 
+                        /> 
+                    `; 
+                    editUsersList.appendChild(row); 
+                }); 
+                editBackdrop.classList.add('show'); 
+            } 
+ 
+            editCancel.addEventListener('click', () => { 
+                editBackdrop.classList.remove('show'); 
+            }); 
+ 
+            editSave.addEventListener('click', () => { 
+                const inputs = editUsersList.querySelectorAll('.edit-input'); 
+                const newNames = {}; 
+                inputs.forEach(input => { 
+                    const id = input.getAttribute('data-id'); 
+                    let value = input.value.trim(); 
+                    if (!value) { 
+                        const index = users.findIndex(u => u.id === id); 
+                        value = defaultNames[index]; 
+                        input.value = value; 
+                    } 
+                    newNames[id] = value; 
+                }); 
+ 
+                localStorage.setItem('ShankaraUserNames_v2', JSON.stringify(newNames)); 
+                users.forEach(u => { 
+                    if (newNames[u.id]) { 
+                        u.name = newNames[u.id]; 
+                    } 
+                }); 
+ 
+                renderUserGrid(); 
+                editBackdrop.classList.remove('show'); 
+            }); 
+ 
+            // Tutup panel kalau klik di luar box 
+            editBackdrop.addEventListener('click', (e) => { 
+                if (e.target === editBackdrop) { 
+                    editBackdrop.classList.remove('show'); 
+                } 
+            }); 
+ 
+            // Daily Affirmations 
+            const affirmations = [ 
+                "You are capable of amazing things.", 
+                "Your potential is endless.", 
+                "Radiate positivity today.", 
+                "You are strong, confident, and unstoppable.", 
+                "Believe in yourself and all that you are.", 
+                "Today is a beautiful day to be alive.", 
+                "You are enough, just as you are.", 
+                "Embrace the magic within you.", 
+                "Your smile lights up the world.", 
+                "You are creating a life you love." 
+            ]; 
+ 
+            function setDailyAffirmation() { 
+                const affirmationEl = document.getElementById('daily-affirmation'); 
+                const randomAffirmation = affirmations[Math.floor(Math.random() * affirmations.length)]; 
+                affirmationEl.textContent = `“${randomAffirmation}”`; 
+            } 
+ 
+            // Fairy Dust Cursor 
+            document.addEventListener('mousemove', (e) => { 
+                const dust = document.createElement('div'); 
+                dust.classList.add('fairy-dust'); 
+                dust.style.left = e.pageX + 'px'; 
+                dust.style.top = e.pageY + 'px'; 
+                 
+                // Randomize color slightly 
+                const colors = ['#ff6fa8', '#ffd1e4', '#ffffff', '#fff5fb']; 
+                dust.style.background = colors[Math.floor(Math.random() * colors.length)]; 
+                 
+                document.body.appendChild(dust); 
+                 
+                setTimeout(() => { 
+                    dust.remove(); 
+                }, 1000); 
+            }); 
+ 
+            // Floating Bubbles Background 
+            function createBubbles() { 
+                const bubbleCount = 25; // More bubbles
+                for (let i = 0; i < bubbleCount; i++) { 
+                    const bubble = document.createElement('div'); 
+                    bubble.classList.add('floating-bubble'); 
+                     
+                    const size = Math.random() * 60 + 20; 
+                    bubble.style.width = size + 'px'; 
+                    bubble.style.height = size + 'px'; 
+                     
+                    bubble.style.left = Math.random() * 100 + 'vw'; 
+                    bubble.style.animationDuration = (Math.random() * 10 + 10) + 's'; 
+                    bubble.style.animationDelay = (Math.random() * 5) + 's'; 
+                     
+                    // Interactive Pop
+                    bubble.addEventListener('click', (e) => {
+                        e.stopPropagation(); // prevent clicking things behind
+                        bubble.classList.add('bubble-pop');
+                        setTimeout(() => {
+                            bubble.remove();
+                            // Optional: Respawn bubble after pop? 
+                            // For now, let's just leave it as one-time fun or maybe add new one.
+                            // To keep it simple, just remove.
+                        }, 300);
+                    });
 
-            <div id="user-buttons-container" class="users-grid" style="display: none;"></div>
-        </div>
-        <div id="content-display-area"></div>
-    </div>
+                    document.body.appendChild(bubble); 
+                } 
+            } 
+ 
+            // Inisialisasi 
+            renderUserGrid(); 
+            updateDateTime(); 
+            setDailyAffirmation(); 
+            createBubbles(); 
+            setInterval(updateDateTime, 1000); 
+        }); 
+    </script> 
+</body> 
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            let clickedNumbers = JSON.parse(localStorage.getItem('clickedNumbers')) || {};
-            let activeContentId = null;
-
-            const users = {
-                jakarta: [
-                    { id: 'rondang', name: 'Rondang', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
-                    { id: 'sulastri', name: 'Sulastri', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
-                    { id: 'evie', name: 'Evie', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
-                    { id: 'mawar', name: 'Mawar', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
-                    { id: 'srisuwarti', name: 'Sri Suwarti', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
-                    { id: 'yohanaami', name: 'Yohana Ami', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
-                    { id: 'neneng', name: 'Neneng', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
-                    { id: 'poppy', name: 'Poppy', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
-                    { id: 'rachma', name: 'Rachma', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
-                    { id: 'ninik', name: 'Ninik', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
-                    { id: 'rosi', name: 'Rosi', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
-                    { id: 'ariyuliawati', name: 'Ari Yuliawati', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
-                    { id: 'nurlaili', name: 'Nurlaili', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
-                ],
-                bandung: [
-                    { id: 'eka', name: 'Eka', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
-                    { id: 'popon', name: 'Popon', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
-                    { id: 'ria', name: 'Ria', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
-                    { id: 'ino', name: 'Ino', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
-                    { id: 'tatang', name: 'Tatang', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
-                    { id: 'nuki', name: 'Nuki', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
-                    { id: 'neti', name: 'Neti', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
-                    { id: 'renny', name: 'Renny', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
-                    { id: 'neni', name: 'Neni', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
-                    { id: 'dian', name: 'Dian', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
-                    { id: 'eni', name: 'Eni', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
-                    { id: 'ranny', name: 'Ranny', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
-                    { id: 'dani', name: 'Dani', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
-                    { id: 'rangga', name: 'Rangga', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
-                    { id: 'dewis', name: 'Dewi S', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
-                    { id: 'ikeu', name: 'Ikeu', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
-                    { id: 'indra', name: 'Indra', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
-                    { id: 'wike', name: 'Wike', links: ['https://survey.xmfactory.com/survey?b=1024798&l=708c36caff453a89'] },
-                ]
-            };
-
-            const welcomePage = document.getElementById('welcome-page');
-            const startBtn = document.getElementById('start-btn');
-            const mainView = document.getElementById('main-view');
-            const userButtonsContainer = document.getElementById('user-buttons-container');
-            const contentDisplayArea = document.getElementById('content-display-area');
-            const regionalButtonsContainer = document.getElementById('regional-buttons-container');
-            const backToRegionalContainer = document.getElementById('back-to-regional-container'); // [MODIFIKASI]
-
-            // [MODIFIKASI] Seluruh fungsi ini diubah untuk menambahkan tombol back
-            function generateUserButtons(region) {
-                userButtonsContainer.innerHTML = '';
-                backToRegionalContainer.innerHTML = ''; // Kosongkan kontainer tombol back sebelumnya
-
-                // 1. Buat tombol kembali
-                const backButton = document.createElement('button');
-                backButton.className = 'back-btn w-full'; // Memakai style .back-btn yang sudah ada
-                backButton.textContent = '← Kembali ke Pilihan Regional';
-                backButton.addEventListener('click', () => {
-                    regionalButtonsContainer.style.display = 'grid';
-                    userButtonsContainer.style.display = 'none';
-                    backToRegionalContainer.style.display = 'none';
-                    userButtonsContainer.innerHTML = ''; // Bersihkan user
-                    backToRegionalContainer.innerHTML = ''; // Bersihkan tombol back
-                });
-
-                backToRegionalContainer.appendChild(backButton);
-                backToRegionalContainer.style.display = 'block'; // Tampilkan kontainer tombol back
-
-                // 2. Buat tombol-tombol user (logika lama)
-                const userList = users[region];
-                userList.forEach(user => {
-                    const userButton = document.createElement('button');
-                    userButton.className = 'user-btn';
-                    userButton.textContent = user.name;
-                    userButton.dataset.target = user.id;
-                    userButtonsContainer.appendChild(userButton);
-                });
-
-                showScreen('main-view');
-                userButtonsContainer.style.display = 'grid';
-            }
-
-            function generateUserContent(user) {
-                const contentWrapper = document.getElementById(user.id);
-                if (contentWrapper) return;
-
-                const userDetailsHTML = `
-                    <div class="user-details-text">
-                        <h3 class="font-bold text-lg">${user.name}</h3>
-                        <ul class="list-none p-0 mt-2">
-                            <li><span class="font-semibold">- ID :</span> ${user.id}</li>
-                        </ul>
-                    </div>
-                `;
-
-                const url = user.links[0] || '#';
-                const isEnabled = user.links[0] ? '' : 'disabled';
-                const isClicked = clickedNumbers[user.id] ? 'clicked' : '';
-
-                const numberGridHTML = `<a href="${url}" target="_blank" rel="noopener noreferrer" class="number-btn ${isEnabled} ${isClicked}">Press For The Link</a>`;
-
-                const newContentWrapper = document.createElement('div');
-                newContentWrapper.id = user.id;
-                newContentWrapper.className = 'content-container fade-transition';
-                newContentWrapper.style.display = 'none';
-                newContentWrapper.style.opacity = '0';
-                newContentWrapper.innerHTML = `
-                    <button class="back-btn mb-4 w-full" aria-label="Back to regional menu">← Kembali ke Menu Regional</button>
-                    ${userDetailsHTML}
-                    <div class="number-grid">${numberGridHTML}</div>
-                `;
-                contentDisplayArea.appendChild(newContentWrapper);
-
-                newContentWrapper.querySelector('.back-btn').addEventListener('click', () => {
-                    showScreen('main-view');
-                    regionalButtonsContainer.style.display = 'grid';
-                    userButtonsContainer.style.display = 'none';
-                    backToRegionalContainer.style.display = 'none';
-                    contentDisplayArea.innerHTML = '';
-                });
-            }
-
-            function updateDateTime() {
-                const now = new Date();
-                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', timeZone: 'Asia/Jakarta' };
-                document.getElementById('datetime').textContent = now.toLocaleString('id-ID', options);
-            }
-
-            function showScreen(screenToShow) {
-                const allScreens = [welcomePage, mainView, ...Array.from(contentDisplayArea.children)];
-                allScreens.forEach(screen => {
-                    screen.style.display = 'none';
-                    screen.style.opacity = '0';
-                });
-
-                const screen = document.getElementById(screenToShow);
-                if (screen) {
-                    screen.style.display = 'block';
-                    setTimeout(() => screen.style.opacity = '1', 50);
-                }
-            }
-
-            regionalButtonsContainer.addEventListener('click', function(event) {
-                const target = event.target.closest('.regional-btn');
-                if (target) {
-                    const region = target.dataset.region;
-                    generateUserButtons(region);
-                    regionalButtonsContainer.style.display = 'none'; // Sembunyikan pilihan regional
-                }
-            });
-
-            userButtonsContainer.addEventListener('click', function(event) {
-                const target = event.target.closest('.user-btn');
-                if (target) {
-                    const userId = target.dataset.target;
-                    const user = users.jakarta.find(u => u.id === userId) || users.bandung.find(u => u.id === userId);
-                    if (user) {
-                        generateUserContent(user);
-                        showScreen(user.id);
-                    }
-                }
-            });
-
-            document.addEventListener('click', function(event) {
-                const target = event.target.closest('a.number-btn:not(.disabled)');
-                if (target) {
-                    const userId = target.closest('.content-container').id;
-                    clickedNumbers[userId] = true;
-                    localStorage.setItem('clickedNumbers', JSON.stringify(clickedNumbers));
-                    target.classList.add('clicked');
-                }
-            });
-
-            startBtn.addEventListener('click', () => {
-                welcomePage.style.opacity = '0';
-                setTimeout(() => {
-                    showScreen('main-view');
-                    regionalButtonsContainer.style.display = 'grid'; 
-                    userButtonsContainer.style.display = 'none';
-                    backToRegionalContainer.style.display = 'none'; // [MODIFIKASI] Pastikan ini tersembunyi
-                }, 500);
-            });
-
-            updateDateTime();
-            setInterval(updateDateTime, 1000);
-        });
-    </script>
-</body>
 </html>
